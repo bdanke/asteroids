@@ -85,10 +85,16 @@
   Screen.prototype.addBullet = function() {
     var bullet = this.ship.fireBullet();
     this.bullets.push(bullet);
+    setTimeout( function() { this.game.removeBullet(bullet); }, 500);
   };
 
   Screen.prototype.removeAsteroid = function(aster) {
     var arr = this.asteroids;
+    if (aster.radius > 10) {
+      for (var i = 0; i < 3; i++) {
+        arr.push(aster.smallerAsteroid());
+      }
+    }
     this.asteroids = _.without(arr, aster);
   };
 

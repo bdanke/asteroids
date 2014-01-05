@@ -34,7 +34,6 @@ Function.prototype.inherits = function (BaseClass) {
   MovingObject.prototype.draw = function(ctx){
     ctx.beginPath();
     ctx.strokeStyle = this.color;
-    // ctx.fillRect(this.xPos,this.yPos,50,50);
     ctx.arc(this.xPos,this.yPos,this.radius,0,Math.PI*2);
     ctx.stroke();
   }
