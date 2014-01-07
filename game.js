@@ -5,11 +5,11 @@
     this.dimX = dimX;
     this.dimY = dimY;
     this.ctx = ctx;
+    this.score = 0;
     this.asteroids = [];
     this.addAsteroids(numAsteroids);
     var pos = [dimX/2, dimY/2]
-    var temp = new Game.Ship(pos,0,0);
-    this.ship = temp;
+    this.ship = new Game.Ship(pos,0,-Math.PI/2);
     this.bullets = [];
   };
 
@@ -30,6 +30,8 @@
     this.bullets.forEach( function(bullet) {
       bullet.draw(self.ctx);
     });
+    this.ctx.fillStyle = '#fff';
+    this.ctx.fillText('Score: ' + this.score, 50, 50);
   };
 
   Screen.prototype.move = function() {
@@ -52,6 +54,11 @@
       bullet.hitAsteroids(self);
     });
     this.checkCollisions();
+    
+    if (this.asteroids.length == 0) {
+      this.stop();
+      return true;
+    }
   };
 
   Screen.prototype.start = function() {
@@ -71,14 +78,22 @@
 
   Screen.prototype.stop = function() {
     clearInterval(this.timer);
-    alert("GAME OVER!");
+    this.ctx.font = '40px san-serif';
+    this.ctx.textBaseline = 'middle';
+    if (this.asteroids.length == 0) {
+      this.ctx.fillStyle = '#0f0';
+      this.ctx.fillText('YOU WIN!', this.dimX / 2 - 100, this.dimY / 2);
+    } else {
+      this.ctx.fillStyle = '#f00';
+      this.ctx.fillText('GAME OVER', this.dimX / 2 - 120, this.dimY / 2);
+    }
   };
 
   Screen.prototype.bindKeyHandlers = function() {
     key('up', this.ship.impulse.bind(this.ship, 1));
     key('down', this.ship.impulse.bind(this.ship, -1));
-    key('left', this.ship.rotate.bind(this.ship, 0.2));
-    key('right', this.ship.rotate.bind(this.ship, -0.2));
+    key('left', this.ship.rotate.bind(this.ship, -0.2));
+    key('right', this.ship.rotate.bind(this.ship, +0.2));
     key('space', this.addBullet.bind(this));
   };
 
@@ -96,6 +111,7 @@
       }
     }
     this.asteroids = _.without(arr, aster);
+    this.score += 1;
   };
 
   Screen.prototype.removeBullet = function(bullet) {

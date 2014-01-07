@@ -10,7 +10,7 @@
   Asteroid.inherits(Game.MovingObject);
 
   Asteroid.prototype.smallerAsteroid = function() {
-    var speed = Math.random() * 10;
+    var speed = Math.random() * 2;
     var theta = Math.random() * 2 * Math.PI;
     return new Asteroid(10, [this.xPos, this.yPos], speed, theta);
   };
