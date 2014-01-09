@@ -62,8 +62,8 @@
 
     if(key.isPressed('up')) this.ship.impulse(0.3);
     if(key.isPressed('down')) this.ship.impulse(-0.3);
-    if(key.isPressed('left')) this.ship.rotate(-0.2);
-    if(key.isPressed('right')) this.ship.rotate(0.2);
+    if(key.isPressed('left')) this.ship.rotate(-0.1);
+    if(key.isPressed('right')) this.ship.rotate(0.1);
 
     this.move();
     this.draw();
@@ -89,8 +89,10 @@
   Screen.prototype.switchState = function() {
     if (this.state == false) {
       this.timer = setInterval(this.step.bind(this), 30);
+      this.state = true;
     } else {
       clearInterval(this.timer);
+      this.state = false;
     }
   };
 
