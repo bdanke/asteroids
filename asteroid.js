@@ -23,7 +23,7 @@
     var pos = [];
     pos.push(randomPos(dimX));
     pos.push(randomPos(dimY));
-    var speed = Math.random() * 10;
+    var speed = Math.random() * 5;
     var theta = Math.random() * 2 * Math.PI;
     return new Asteroid(20, pos, speed, theta);
   };

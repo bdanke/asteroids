@@ -8,14 +8,57 @@
     <script src="./asteroid.js"></script>
     <script src="./bullet.js"></script>
     <script src="./game.js"></script>
+    <style type="text/css">
+      h1, p, body {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: lightblue;
+      }
+
+      .group:after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+
+      .game {
+        width: 700px;
+        margin: auto;
+        margin-top: 30px;
+        padding: 10px;
+        border: 3px solid grey;
+        background: white;
+      }
+
+      .controls {
+        float: left;
+        margin-top: 10px;
+      }
+    </style>
   </head>
   <body>
-    <canvas width="500" height="500" id="canvas"></canvas>
-    <script>
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    var game = new Game.Screen(ctx,500,500,1);
-    game.start();
-    </script>
+    <div class="game group">
+      <h1>Asteroids!</h3>
+      <canvas width="700" height="500" id="canvas"></canvas>
+      <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var game = new Game.Screen(ctx,700,500,7);
+        game.start();
+      </script>
+      <div class="controls">
+        <p><u>Controls</u></p>
+        <p>up/down: acceleration</p>
+        <p>left/right: turning</p>
+        <p>spacebar: fire</p>
+        <p>p: start/pause game</p>
+        <p>r: restart game</p>
+      </div>
+      <a style="float: right" href="http://bdanker.com">Back</a>
+    </div>
   </body>
 </html>

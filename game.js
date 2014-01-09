@@ -5,12 +5,24 @@
     this.dimX = dimX;
     this.dimY = dimY;
     this.ctx = ctx;
+    this.state = false;
+    this.numAsteroids = numAsteroids;
     this.score = 0;
     this.asteroids = [];
     this.addAsteroids(numAsteroids);
-    var pos = [dimX/2, dimY/2]
+    var pos = [dimX/2, dimY/2];
     this.ship = new Game.Ship(pos,0,-Math.PI/2);
     this.bullets = [];
+  };
+
+  Screen.prototype.setup = function() {
+    this.bindKeyHandlers();
+    this.score = 0;
+    this.asteroids = [];
+    this.addAsteroids(this.numAsteroids);
+    this.ship = new Game.Ship([this.dimX/2,this.dimY/2],0,-Math.PI/2);
+    this.bullets = [];
+    this.draw();
   };
 
   Screen.prototype.addAsteroids = function(num) {
@@ -30,8 +42,9 @@
     this.bullets.forEach( function(bullet) {
       bullet.draw(self.ctx);
     });
+    this.ctx.font = "20px san-serif";
     this.ctx.fillStyle = '#fff';
-    this.ctx.fillText('Score: ' + this.score, 50, 50);
+    this.ctx.fillText('Score: ' + this.score, 20, 30);
   };
 
   Screen.prototype.move = function() {
@@ -46,6 +59,12 @@
   };
 
   Screen.prototype.step = function() {
+
+    if(key.isPressed('up')) this.ship.impulse(0.3);
+    if(key.isPressed('down')) this.ship.impulse(-0.3);
+    if(key.isPressed('left')) this.ship.rotate(-0.2);
+    if(key.isPressed('right')) this.ship.rotate(0.2);
+
     this.move();
     this.draw();
     var self = this;
@@ -63,7 +82,16 @@
 
   Screen.prototype.start = function() {
     this.bindKeyHandlers();
-    this.timer = setInterval(this.step.bind(this), 30);
+    key('r', this.setup.bind(this));
+    this.draw();
+  };
+
+  Screen.prototype.switchState = function() {
+    if (this.state == false) {
+      this.timer = setInterval(this.step.bind(this), 30);
+    } else {
+      clearInterval(this.timer);
+    }
   };
 
   Screen.prototype.checkCollisions = function() {
@@ -87,14 +115,13 @@
       this.ctx.fillStyle = '#f00';
       this.ctx.fillText('GAME OVER', this.dimX / 2 - 120, this.dimY / 2);
     }
+    key.unbind('p');
+    key.unbind('space');
   };
 
   Screen.prototype.bindKeyHandlers = function() {
-    key('up', this.ship.impulse.bind(this.ship, 1));
-    key('down', this.ship.impulse.bind(this.ship, -1));
-    key('left', this.ship.rotate.bind(this.ship, -0.2));
-    key('right', this.ship.rotate.bind(this.ship, +0.2));
     key('space', this.addBullet.bind(this));
+    key('p', this.switchState.bind(this));
   };
 
   Screen.prototype.addBullet = function() {
